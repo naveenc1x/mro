@@ -1,0 +1,146 @@
+<script>
+(function () {
+  // Server endpoint that receives the targeting payload and returns the popup fragment HTML.
+  var POPUP_HTML_URL =
+    window.gtmPopupServerUrl ||
+    "https://dev-cdmp.ad.ex-monotaro.com/cdmp/v3/website-promotions";
+  var OVERLAY_ID = "gtm-simple-popup-overlay";
+  var HOST_ID = "gtm-simple-popup-host";
+  var VIEWPORT_GAP = 30;
+  var POPUP_MAX_WIDTH = 500;
+  var previousBodyOverflow = "";
+
+  // Guard against rendering the popup more than once on the same page.
+  if (document.getElementById(OVERLAY_ID)) return;
+
+  // Full-screen backdrop that centers the popup host.
+  var overlay = document.createElement("div");
+  overlay.id = OVERLAY_ID;
+  overlay.style.position = "fixed";
+  overlay.style.inset = "0";
+  overlay.style.display = "flex";
+  overlay.style.alignItems = "center";
+  overlay.style.justifyContent = "center";
+  overlay.style.padding = "16px";
+  overlay.style.background = "rgba(15, 23, 42, 0.55)";
+  overlay.style.zIndex = "2147483647";
+
+  // Popup host; the fetched fragment is injected here.
+  var host = document.createElement("div");
+  host.id = HOST_ID;
+  host.style.width = "min(100%, " + POPUP_MAX_WIDTH + "px)";
+  host.style.maxWidth = "calc(100vw - " + VIEWPORT_GAP + "px)";
+  host.style.maxHeight = "calc(100vh - " + VIEWPORT_GAP + "px)";
+  host.style.overflow = "auto";
+
+  var loadingState = document.createElement("div");
+  loadingState.textContent = "Loading popup...";
+  loadingState.style.minWidth = "220px";
+  loadingState.style.padding = "20px";
+  loadingState.style.borderRadius = "16px";
+  loadingState.style.background = "#ffffff";
+  loadingState.style.fontFamily = "Arial, sans-serif";
+  loadingState.style.color = "#111827";
+  loadingState.style.textAlign = "center";
+
+  host.appendChild(loadingState);
+  overlay.appendChild(host);
+  document.body.appendChild(overlay);
+
+  // Lock page scroll while the popup is open and restore it on close.
+  previousBodyOverflow = document.body.style.overflow;
+  document.body.style.overflow = "hidden";
+
+  function restoreScroll() {
+    document.body.style.overflow = previousBodyOverflow;
+  }
+
+  function hidePopup() {
+    document.removeEventListener("keydown", handleKeydown);
+    overlay.remove();
+    restoreScroll();
+  }
+
+  function handleKeydown(event) {
+    if (event.key === "Escape") {
+      hidePopup();
+    }
+  }
+
+  function normalizeRegistered(value) {
+    if (value === true || value === 1 || value === "1" || value === "true") {
+      return 1;
+    }
+
+    return 0;
+  }
+
+  function buildRequestPayload() {
+    var variables = window.gtmPopupTestVariables || {};
+
+    return {
+      rid: variables.rid,
+      userId: variables.uid,
+      timestamp: new Date().toISOString(),
+      properties: {
+        request_url: variables.request_url,
+        referrer: variables.cust_dim_hit_referrer, 
+        view_mode: variables.cust_dim_hit_sp_view,
+        visit_id: variables.mts_visit_id,
+        registered: normalizeRegistered(variables.cust_dim_registed),
+        sid: variables.cust_dim_user_sid
+      }
+    };
+  }
+
+  function buildPopupRequestUrl() {
+    var separator = POPUP_HTML_URL.indexOf("?") === -1 ? "?" : "&";
+
+    return POPUP_HTML_URL + separator + "t=" + Date.now();
+  }
+
+  // The popup fragment exposes its close button via [data-popup-close].
+  function bindPopupEvents() {
+    var closeTrigger = host.querySelector("[cdmp-popup-close]");
+    if (closeTrigger) {
+      closeTrigger.addEventListener("click", function (event) {
+        event.preventDefault();
+        console.log("closeTrigger clicked");
+        hidePopup();
+      });
+    }
+  }
+
+  overlay.addEventListener("click", function (event) {
+    if (event.target === overlay) {
+      hidePopup();
+    }
+  });
+
+  document.addEventListener("keydown", handleKeydown);
+
+  // Post the targeting payload, inject the returned fragment, and wire its close trigger.
+  fetch(buildPopupRequestUrl(), {
+    method: "POST",
+    cache: "no-store",
+    headers: {
+      "Content-Type": "application/json"
+    },
+    body: JSON.stringify(buildRequestPayload())
+  })
+    .then(function (response) {
+      if (!response.ok) {
+        throw new Error("Popup request failed with status " + response.status);
+      }
+
+      return response.text();
+    })
+    .then(function (html) {
+      host.innerHTML = html;
+      bindPopupEvents();
+    })
+    .catch(function () {
+      console.error("Unable to load popup content.");
+    });
+})();
+</script>

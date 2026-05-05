@@ -1,0 +1,241 @@
+<!DOCTYPE html>
+<html lang="en">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>GTM Popup Demo</title>
+    <meta
+      name="description"
+      content="Ecommerce demo page"
+    />
+    <script>
+      (function () {
+        var storageKey = "gtm-popup-test-vars";
+        var defaultServerUrl =
+          "https://dev-cdmp.ad.ex-monotaro.com/cdmp/v3/website-promotions";
+        var defaults = {
+          server_url: defaultServerUrl,
+          rid: "cdmpTOP-1,cdmpTOP-2,cdmpTOP-4,cdmpTOP-10",
+          uid: "IjSfCgfYmjMnHDZCPNVRXIZcfdfM6oU4",
+          request_url:
+            "https://www.monotaro.com/g/00188682/?t.q=%E3%82%AA%E3%82%A4%E3%83%AB%E3%83%95%E3%82%A3%E3%83%AB%E3%82%BF%E3%83%BC",
+          cust_dim_hit_referrer:
+            "https://www.monotaro.com/s/?c=&q=%E3%82%AA%E3%82%A4%E3%83%AB%E3%83%95%E3%82%A3%E3%83%AB%E3%82%BF%E3%83%BC",
+          cust_dim_hit_sp_view: "pc_pc",
+          mts_visit_id: "l6xvzhvj1t",
+          cust_dim_registed: "1",
+          cust_dim_user_sid: "M02WK-6P2Ln_CpnCNPMW5WAn5CfUYm"
+        };
+        var saved = {};
+
+        try {
+          saved = JSON.parse(localStorage.getItem(storageKey)) || {};
+        } catch (error) {
+          saved = {};
+        }
+
+        var testVariables = Object.assign({}, defaults, saved);
+
+        function normalizeServerUrl(value) {
+          var serverUrl = String(value || "").trim();
+
+          if (!serverUrl) {
+            return defaultServerUrl;
+          }
+
+          if (!/^https?:\/\//i.test(serverUrl)) {
+            return "https://" + serverUrl;
+          }
+
+          return serverUrl;
+        }
+
+        testVariables.server_url = normalizeServerUrl(testVariables.server_url);
+
+        window.gtmPopupTestStorageKey = storageKey;
+        window.gtmPopupDefaultServerUrl = defaultServerUrl;
+        window.gtmPopupServerUrl = testVariables.server_url;
+        window.gtmPopupTestDefaults = defaults;
+        window.gtmPopupTestVariables = testVariables;
+        window.rid = testVariables.rid;
+        window.userId = testVariables.uid;
+        window.uid = testVariables.uid;
+        window.request_url = testVariables.request_url;
+        window.cust_dim_hit_referrer = testVariables.cust_dim_hit_referrer;
+        window.cust_dim_hit_sp_view = testVariables.cust_dim_hit_sp_view;
+        window.mts_visit_id = testVariables.mts_visit_id;
+        window.cust_dim_registed = testVariables.cust_dim_registed;
+        window.cust_dim_user_sid = testVariables.cust_dim_user_sid;
+
+        window.dataLayer = window.dataLayer || [];
+        window.dataLayer.push({
+          event: "gtm_popup_test_variables",
+          rid: testVariables.rid,
+          userId: testVariables.uid,
+          uid: testVariables.uid,
+          request_url: testVariables.request_url,
+          cust_dim_hit_referrer: testVariables.cust_dim_hit_referrer,
+          cust_dim_hit_sp_view: testVariables.cust_dim_hit_sp_view,
+          mts_visit_id: testVariables.mts_visit_id,
+          cust_dim_registed: testVariables.cust_dim_registed,
+          cust_dim_user_sid: testVariables.cust_dim_user_sid
+        });
+      })();
+    </script>
+    <script>
+      (function (w, d, s, l, i) {
+        w[l] = w[l] || [];
+        w[l].push({ "gtm.start": new Date().getTime(), event: "gtm.js" });
+        var f = d.getElementsByTagName(s)[0],
+          j = d.createElement(s),
+          dl = l != "dataLayer" ? "&l=" + l : "";
+        j.async = true;
+        j.src = "https://www.googletagmanager.com/gtm.js?id=" + i + dl;
+        f.parentNode.insertBefore(j, f);
+      })(window, document, "script", "dataLayer", "GTM-TX644L3B");
+    </script>
+    <link rel="stylesheet" href="./styles.css" />
+  </head>
+  <body>
+    <noscript
+      ><iframe
+        src="https://www.googletagmanager.com/ns.html?id=GTM-TX644L3B"
+        height="0"
+        width="0"
+        style="display: none; visibility: hidden"
+      ></iframe
+    ></noscript>
+    <main class="page">
+      <section class="hero" aria-labelledby="page-title">
+        <div>
+          <p class="eyebrow">GTM Popup Demo Store</p>
+          <h1 id="page-title">Mock site for popup testing.</h1>
+          <p class="intro">
+            Edit the test values, apply them, and the page will reload so the
+            GTM container can read the new values before the popup runs.
+          </p>
+        </div>
+        
+      </section>
+
+     
+
+      <section class="tester" aria-labelledby="tester-title">
+        <div class="section-heading">
+          <div>
+            <p class="eyebrow">Test Variables</p>
+            <h2 id="tester-title">Values sent before GTM loads</h2>
+          </div>
+          <p class="hint">Saved locally in this browser.</p>
+        </div>
+
+        <form id="gtm-test-form" class="test-form">
+          <label class="wide-field">
+            <span>popup server URL</span>
+            <input name="server_url" autocomplete="off" inputmode="url" />
+          </label>
+          <label>
+            <span>rid</span>
+            <input name="rid" autocomplete="off" />
+          </label>
+          <label>
+            <span>userId / uid</span>
+            <input name="uid" autocomplete="off" />
+          </label>
+          <label>
+            <span>request_url / Page URL</span>
+            <input name="request_url" autocomplete="off" />
+          </label>
+          <label>
+            <span>referrer</span>
+            <input name="cust_dim_hit_referrer" autocomplete="off" />
+          </label>
+          <label>
+            <span>view_mode</span>
+            <select name="cust_dim_hit_sp_view">
+              <option value="pc_pc">pc_pc</option>
+              <option value="grid">grid</option>
+              <option value="list">list</option>
+              <option value="compact">compact</option>
+            </select>
+          </label>
+          <label>
+            <span>visit_id</span>
+            <input name="mts_visit_id" autocomplete="off" />
+          </label>
+          <label>
+            <span>registered</span>
+            <select name="cust_dim_registed">
+              <option value="1">1</option>
+              <option value="0">0</option>
+              <option value="true">true</option>
+              <option value="false">false</option>
+            </select>
+          </label>
+          <label>
+            <span>sid</span>
+            <input name="cust_dim_user_sid" autocomplete="off" />
+          </label>
+
+          <div class="actions">
+            <button type="submit">Apply & Reload</button>
+            <button type="button" class="secondary-button" id="reset-test-values">
+              Reset Defaults
+            </button>
+          </div>
+        </form>
+      </section>
+    </main>
+    <script>
+      (function () {
+        var form = document.getElementById("gtm-test-form");
+        var resetButton = document.getElementById("reset-test-values");
+        var storageKey = window.gtmPopupTestStorageKey;
+        var testVariables = window.gtmPopupTestVariables;
+
+        Object.keys(testVariables).forEach(function (key) {
+          var field = form.elements[key];
+          if (field) {
+            field.value = testVariables[key];
+          }
+        });
+
+        form.addEventListener("submit", function (event) {
+          event.preventDefault();
+
+          var nextValues = {};
+          Array.prototype.forEach.call(form.elements, function (field) {
+            if (field.name) {
+              nextValues[field.name] = field.value.trim();
+            }
+          });
+
+          if (!nextValues.server_url) {
+            nextValues.server_url = window.gtmPopupDefaultServerUrl;
+          } else if (!/^https?:\/\//i.test(nextValues.server_url)) {
+            nextValues.server_url = "https://" + nextValues.server_url;
+          }
+
+          localStorage.setItem(storageKey, JSON.stringify(nextValues));
+
+          try {
+            var nextUrl = new URL(nextValues.request_url, window.location.href);
+            if (nextUrl.origin === window.location.origin) {
+              window.location.href = nextUrl.href;
+              return;
+            }
+          } catch (error) {
+            // Fall back to a plain reload when the URL value is not navigable.
+          }
+
+          window.location.reload();
+        });
+
+        resetButton.addEventListener("click", function () {
+          localStorage.removeItem(storageKey);
+          window.location.reload();
+        });
+      })();
+    </script>
+  </body>
+</html>

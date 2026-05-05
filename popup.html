@@ -1,0 +1,76 @@
+<style>
+  .gtm-simple-popup,
+  .gtm-simple-popup * {
+    box-sizing: border-box;
+  }
+
+  .gtm-simple-popup {
+    width: 100%;
+    font-family: sans-serif;
+  }
+
+  .gtm-simple-popup__card {
+    position: relative;
+    width: 100%;
+    border-radius: 14px;
+    overflow: hidden;
+    background: #ffffff;
+    box-shadow: 0 18px 48px rgba(0, 0, 0, 0.18);
+    line-height: 0;
+  }
+
+  .gtm-simple-popup__link {
+    display: block;
+    text-decoration: none;
+  }
+
+  .gtm-simple-popup__image {
+    display: block;
+    width: 100%;
+    height: auto;
+  }
+
+  .gtm-simple-popup__close {
+    position: absolute;
+    top: 0px;
+    right: 0px;
+    width: 38px;
+    height: 38px;
+    border: 0;
+    border-radius: 999px;
+    background: rgba(0, 0, 0, 0.65);
+    color: #ffffff;
+    cursor: pointer;
+    font-size: 22px;
+    line-height: 1;
+  }
+
+  .gtm-simple-popup__close:hover {
+    background: rgba(0, 0, 0, 0.82);
+  }
+</style>
+
+<div class="gtm-simple-popup" data-popup-root="simple-tool-banner">
+  <div class="gtm-simple-popup__card">
+    <button
+      type="button"
+      class="gtm-simple-popup__close"
+      cdmp-popup-close
+      aria-label="Close"
+    >
+      ×
+    </button>
+    <a
+      class="gtm-simple-popup__link"
+      href="/g/07732112/"
+      target="_blank"
+      rel="noopener noreferrer"
+    >
+      <img
+        class="gtm-simple-popup__image"
+        src="https://img-cf.karte.io/image/698060c56dc812ab5bfa2856::karte_tool_set_for_car_maintenance_banner.png"
+        alt="Tool set"
+      />
+    </a>
+  </div>
+</div>
